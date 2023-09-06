@@ -1,0 +1,67 @@
+﻿@page "/userRols/edit/{Id:int}"
+@inject NavigationManager navigationManager
+@inject IRepository repository
+@inject SweetAlertService sweetAlertService
+
+<h3>Editar User Rol</h3>
+
+@if (userRol is null)
+{
+    <p>Cargando...</p>
+}
+else
+{
+    <UserRolForm @ref="userRolForm" UserRol="userRol" OnValidSubmit="Edit" ReturnAction="Return" />
+}
+
+@code {
+    private UserRol? userRol;
+    private UserRolForm? userRolForm;
+
+    [Parameter]
+    public int Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var responseHTTP = await repository.Get<UserRol>($"api/userRols/{Id}");
+
+        if (responseHTTP.Error)
+        {
+            if (responseHTTP.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                navigationManager.NavigateTo("userRols");
+            }
+            else
+            {
+                var messageError = await responseHTTP.GetErrorMessageAsync();
+                await sweetAlertService.FireAsync("Error", messageError, SweetAlertIcon.Error);
+            }
+        }
+        else
+        {
+            userRol = responseHTTP.Response;
+        }
+    }
+
+    private async Task Edit()
+    {
+        var responseHTTP = await repository.Put("api/userRols", userRol);
+
+        if (responseHTTP.Error)
+        {
+            var mensajeError = await responseHTTP.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
+        }
+        else
+        {
+            userRolForm!.FormPostedSuccessfully = true;
+            navigationManager.NavigateTo("userRols");
+        }
+    }
+
+    private void Return()
+    {
+        navigationManager.NavigateTo("userRols");
+    }
+}
+

@@ -1,0 +1,38 @@
+﻿
+@page "/WorkTypes/create"
+@inject IRepository repository
+@inject NavigationManager navigationManager
+@inject SweetAlertService sweetAlertService
+
+<h3>Crear Types of works</h3>
+
+<WorkTypesForm @ref="workTypesForm" WorkTypes="workTypes" OnValidSubmit="Create" ReturnAction="Return" />
+
+
+@code {
+    private WorkTypes workTypes = new();
+    private WorkTypesForm? workTypesForm;
+
+    private async Task Create()
+    {
+        var responseHttp = await repository.Post("/api/workTypes",  workTypes);
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message);
+            return;
+        }
+        else
+        {
+            workTypesForm!.FormPostedSuccessfully = true;
+            navigationManager.NavigateTo("/workTypes");
+        }
+        
+    }
+
+    private void Return()
+    {
+        navigationManager.NavigateTo("/workTypes");
+    }
+}
+

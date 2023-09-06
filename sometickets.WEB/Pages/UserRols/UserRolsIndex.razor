@@ -8,7 +8,7 @@
 <h3>User Rols</h3>
 
 <div class="mb-3">
-    <a class="btn btn-primary" href="/categories/create">Nueva User Rol</a>
+    <a class="btn btn-primary" href="/userRols/create">Nueva User Rol</a>
 </div>
 
 <GenericList MyList="UserRols">
@@ -17,7 +17,7 @@
             <thead>
                 <tr>
                     <th></th>
-                    <th>UserRol</th>
+                    <th>User Rol</th>
                 </tr>
             </thead>
             <tbody>
@@ -70,7 +70,7 @@
             return;
         }
 
-        var responseHTTP = await repository.Delete($"api/categories/{userRol.Id}");
+        var responseHTTP = await repository.Delete($"api/userRols/{userRol.Id}");
 
         if (responseHTTP.Error)
         {

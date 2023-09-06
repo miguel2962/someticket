@@ -1,0 +1,38 @@
+﻿
+@page "/userRols/create"
+@inject IRepository repository
+@inject NavigationManager navigationManager
+@inject SweetAlertService sweetAlertService
+
+<h3>Crear User Rol</h3>
+
+<UserRolForm @ref="userRolForm" UserRol="userRol" OnValidSubmit="Create" ReturnAction="Return" />
+
+
+@code {
+    private UserRol userRol = new();
+    private UserRolForm? userRolForm;
+
+    private async Task Create()
+    {
+        var responseHttp = await repository.Post("/api/userRols", userRol);
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message);
+            return;
+        }
+        else
+        {
+            userRolForm!.FormPostedSuccessfully = true;
+            navigationManager.NavigateTo("/userRols");
+        }
+        
+    }
+
+    private void Return()
+    {
+        navigationManager.NavigateTo("/userRols");
+    }
+}
+

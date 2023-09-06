@@ -16,4 +16,8 @@
     <ProjectReference Include="..\sometickets.Shared\sometickets.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\ClienteTypes\" />
+  </ItemGroup>
+
 </Project>

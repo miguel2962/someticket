@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using sometickets.API.Data;
 
@@ -10,9 +11,11 @@ using sometickets.API.Data;
 namespace sometickets.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230906132455_worktypes")]
+    partial class worktypes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,27 +64,6 @@ namespace sometickets.API.Migrations
                         .IsUnique();
 
                     b.ToTable("ClienteType");
-                });
-
-            modelBuilder.Entity("sometickets.Shared.Entities.UserRol", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Description")
-                        .IsUnique();
-
-                    b.ToTable("UserRols");
                 });
 
             modelBuilder.Entity("sometickets.Shared.Entities.WorkTypes", b =>

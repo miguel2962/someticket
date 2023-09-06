@@ -1,36 +1,36 @@
-﻿@page "/userRols"
+﻿@page "/workTypes"
 
 @inject IRepository repository
 @inject NavigationManager navigationManager
 @inject SweetAlertService sweetAlertService
 
 
-<h3>User Rols</h3>
+<h3>workTypes</h3>
 
 <div class="mb-3">
-    <a class="btn btn-primary" href="/categories/create">Nueva User Rol</a>
+    <a class="btn btn-primary" href="/workTypes/create">Nueva workTypes</a>
 </div>
 
-<GenericList MyList="UserRols">
+<GenericList MyList="WorkTypes">
     <Body>
         <table class="table table-striped">
             <thead>
                 <tr>
                     <th></th>
-                    <th>UserRol</th>
+                    <th>WorkTypes</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var userRol in UserRols!)
+                @foreach (var workTypes in WorkTypes!)
                 {
                     <tr>
                         <td>
-                            <a href="/userRols/edit/@userRol.Id" class="btn btn-warning">Editar</a>
-                            <button class="btn btn-danger" @onclick=@(() => Delete(userRol))>Borrar</button>
+                            <a href="/workTypes/edit/@workTypes.Id_worktype" class="btn btn-warning">Editar</a>
+                            <button class="btn btn-danger" @onclick=@(() => Delete(workTypes))>Borrar</button>
 
                         </td>
                         <td>
-                            @userRol.Description
+                            @workTypes.Description
                         </td>
                     </tr>
                 }
@@ -40,7 +40,7 @@
 </GenericList>
 
 @code {
-    public List<UserRol>? UserRols { get; set; }
+    public List<WorkTypes>? WorkTypes { get; set; }
 
     protected async override Task OnInitializedAsync()
     {
@@ -49,11 +49,11 @@
 
     private async Task Load()
     {
-        var responseHppt = await repository.Get<List<UserRol>>("api/userRols");
-        UserRols = responseHppt.Response!;
+        var responseHppt = await repository.Get<List<WorkTypes>>("api/workTypes");
+        WorkTypes = responseHppt.Response!;
     }
 
-    private async Task Delete(UserRol userRol)
+    private async Task Delete(WorkTypes workTypes)
     {
         var result = await sweetAlertService.FireAsync(new SweetAlertOptions
             {
@@ -70,7 +70,7 @@
             return;
         }
 
-        var responseHTTP = await repository.Delete($"api/categories/{userRol.Id}");
+        var responseHTTP = await repository.Delete($"api/workTypes/{workTypes.Id_worktype}");
 
         if (responseHTTP.Error)
         {
